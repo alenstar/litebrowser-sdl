@@ -12,11 +12,11 @@ int main(int argc, char *argv[]) {
     SDL_Renderer *renderer = NULL;
     SDL_Texture *bitmapTex = NULL;
     SDL_Surface *bitmapSurface = NULL;
-    int posX = 100, posY = 100, width = 800, height = 600;
+    int posX =  SDL_WINDOWPOS_UNDEFINED, posY =  SDL_WINDOWPOS_UNDEFINED, width = 800, height = 600;
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
+    win = SDL_CreateWindow("Hello World", posX, posY, width, height, SDL_WINDOW_OPENGL);
 
     renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
@@ -27,8 +27,8 @@ int main(int argc, char *argv[]) {
     litehtml::context html_context;
     html_context.load_master_stylesheet(master_css);
     container_sdl *csdl = new container_sdl(&html_context, renderer);
-
-    while (1) {
+    bool running = true;
+    while (running) {
         SDL_Event e;
         if (SDL_PollEvent(&e)) {
             if (e.type == SDL_KEYDOWN) {
@@ -39,8 +39,10 @@ int main(int argc, char *argv[]) {
                                       "build/index.html";
                     // std::string url = "http://www.litehtml.com/";
                     csdl->open_page(url);
+                    break;
                 }
                 case SDLK_ESCAPE:
+                    running = false;
                     break;
                 }
             }
@@ -48,7 +50,8 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        csdl->on_draw();
+        SDL_RenderClear(renderer);
+        csdl->on_draw(renderer);
         // SDL_RenderClear(renderer);
         // SDL_RenderCopy(renderer, bitmapTex, NULL, NULL);
         SDL_RenderPresent(renderer);
