@@ -7,15 +7,19 @@
 #include <SDL2/SDL_image.h>
 #include <map>
 
-struct font_cfg{
+class FontConfig{
+public:
+	int id;
+	int size;
 	int style;
-
+	int weight;
+	int width;
 };
 
 class container_sdl:	public litehtml::document_container
 {
 protected:
-	std::map<std::string,TTF_Font*> m_fonts;
+	std::map<std::string, FontConfig*> m_fonts;
 	struct NVGcontext *m_vg;
 public:
 	container_sdl(litehtml::context* context,struct NVGcontext *vg);

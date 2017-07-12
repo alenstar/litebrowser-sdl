@@ -51,7 +51,7 @@ int loadFonts(NVGcontext* vg)
         LOGE("Could not add font bold.");
         return -1;
     }
-    int fontEmoji = nvgCreateFont(vg, "emoji", "../nanovg/example/NotoEmoji-Regular.ttf");
+    int fontEmoji = nvgCreateFont(vg, "emoji", "DroidSansFallback.ttf");//"../nanovg/example/NotoEmoji-Regular.ttf");
     if (fontEmoji == -1) {
         LOGE("Could not add font emoji.");
         return -1;
@@ -117,9 +117,7 @@ int main(int argc, char *argv[]) {
             if (e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym) {
                 case SDLK_SPACE: {
-                    std::string url = "file:///opt/workspace/beego/src/"
-                                      "github.com/alenstar/litebrowser-sdl/"
-                                      "build/index.html";
+                    std::string url = argc == 1 ? "index.html" : argv[1]; // file:///index.html
                     // std::string url = "http://www.litehtml.com/";
                     container->open_page(url);
                     break;
